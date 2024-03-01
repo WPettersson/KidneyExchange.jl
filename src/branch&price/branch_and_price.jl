@@ -25,7 +25,7 @@ This is the main function to call for an execution of the branch-and-price algor
 * `subgraphs::Graph_copies`: Description of the graph copies of the extended edge formulation
 * `bp_status::BP_status`:  Structure containing every relevant information on the execution of the algorithm (including the optimal solution)
 """
-function solve_with_BP(filename::String, K::Int, L::Int, bp_params::BP_params = BP_params(), timer::TimerOutput = TimerOutput(), time_limit::Float64 = 600.0)
+function solve_with_BP(filename::String, K::Int, L::Int, bp_params::BP_params = BP_params(), timer::TimerOutput = TimerOutput(), time_limit::Float64 = 600.0, unweight::Bool = false)
     start_time = time()
     reset_timer!(timer)
     Random.seed!(10)
@@ -36,7 +36,7 @@ function solve_with_BP(filename::String, K::Int, L::Int, bp_params::BP_params = 
     # Parsing
     if bp_params.verbose
     printstyled("\n----------------------------------------------------------\n Parse the input file\n----------------------------------------------------------\n\n" ; color = :yellow) end
-    instance = @timeit timer "Parser" Instance(filename, K, L)
+    instance = @timeit timer "Parser" Instance(filename, K, L, unweight)
 
     # Preprocessing
     if bp_params.verbose printstyled("\n----------------------------------------------------------\n Preprocessing: compute the graph copies\n----------------------------------------------------------\n\n" ; color = :yellow) end
