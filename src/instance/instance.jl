@@ -43,7 +43,7 @@ struct Instance
     end
 
     # Parse instance from file
-    function Instance(filename::String, K::Int, L::Int = 0)
+    function Instance(filename::String, K::Int, L::Int = 0, unweight::Bool = false)
 
         wmd_file = filename * ".wmd"
         dat_file = filename * ".dat"
@@ -51,7 +51,7 @@ struct Instance
         if isfile(wmd_file)
             wmd_file_first_line = readline(wmd_file)
             if startswith(wmd_file_first_line, "#")
-                g, edge_weight, is_altruist = read_wmd_file(wmd_file)
+                g, edge_weight, is_altruist = read_wmd_file(wmd_file, unweight)
             else
                 g, edge_weight, is_altruist = read_kep_file(wmd_file, dat_file)
             end
@@ -63,7 +63,7 @@ struct Instance
             if isfile(wmd_file)
                 wmd_file_first_line = readline(wmd_file)
                 if startswith(wmd_file_first_line, "#")
-                    g, edge_weight, is_altruist = read_wmd_file(wmd_file)
+                    g, edge_weight, is_altruist = read_wmd_file(wmd_file, unweight)
                 else
                     g, edge_weight, is_altruist = read_kep_file(wmd_file, dat_file)
                 end

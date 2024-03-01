@@ -39,6 +39,7 @@ function solve_with_BP(
     bp_params::BP_params = BP_params(),
     timer::TimerOutput = TimerOutput(),
     time_limit::Float64 = 600.0,
+    unweight::Bool = false,
 )
     start_time = time()
     reset_timer!(timer)
@@ -58,7 +59,7 @@ function solve_with_BP(
             color = :yellow,
         )
     end
-    instance = @timeit timer "Parser" Instance(filename, K, L)
+    instance = @timeit timer "Parser" Instance(filename, K, L, unweight)
 
     # Preprocessing
     if bp_params.verbose

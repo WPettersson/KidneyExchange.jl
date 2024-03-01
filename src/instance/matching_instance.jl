@@ -72,7 +72,7 @@ And a preview of the .wmd file (including only a subset of the arcs) looks like 
 
 * `wmd_file::String` : Absolute path of the `.wmd` file.
 """
-function read_wmd_file(filepath)
+function read_wmd_file(filepath, unweight)
 
     @assert last(splitext(filepath)) == ".wmd" "not a wmd file"
     file_path = filepath
@@ -142,7 +142,11 @@ function read_wmd_file(filepath)
             if !is_altruist[dst] && wgt > 0.0
                 push!(sources, src)
                 push!(destinations, dst)
-                push!(weights, wgt)
+                if unweight
+                    push!(weights, 1.0::Float64)
+                else
+                    push!(weights, wgt)
+                end
             end
         end
     end
