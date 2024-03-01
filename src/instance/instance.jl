@@ -43,13 +43,13 @@ struct Instance
     end
 
     # Parse instance from file
-    function Instance(filename::String, K::Int, L::Int = 0)
+    function Instance(filename::String, K::Int, L::Int = 0, unweight::Bool = false)
 
         wmd_file = filename * ".wmd"
         dat_file = filename * ".dat"
 
         if isfile(wmd_file) && startswith(readline(wmd_file), "#")
-            g, edge_weight, is_altruist = read_wmd_file(wmd_file)
+            g, edge_weight, is_altruist = read_wmd_file(wmd_file, unweight)
         else
             inst = string(filename)
             data_folder = joinpath(@__DIR__, "..", "..", "data")

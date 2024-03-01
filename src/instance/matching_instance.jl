@@ -94,7 +94,7 @@ struct MatchingInstance
     preflib_instance::PrefLibInstance
     graph::SimpleWeightedDiGraph{Int,Float64}
 
-    function MatchingInstance(filepath)
+    function MatchingInstance(filepath, unweight)
 
         preflib_instance = PrefLibInstance(filepath)
 
@@ -118,7 +118,11 @@ struct MatchingInstance
             vertex1, vertex2, weight = split(line, ",")
             push!(sources, parse(Int, vertex1))
             push!(destinations, parse(Int, vertex2))
-            push!(weights, parse(Float64, weight))
+            if unweight
+                push!(weights, 1.0::Float64)
+            else
+                push!(weights, parse(Float64, weight))
+            end
         end
 
         graph = SimpleWeightedDiGraph(sources, destinations, weights)
@@ -198,10 +202,10 @@ And a preview of the .wmd file (including only a subset of the arcs) looks like 
 
 * `wmd_file::String` : Absolute path of the `.wmd` file.
 """
-function read_wmd_file(filepath)
+function read_wmd_file(filepath, unweight)
 
     @assert last(splitext(filepath)) == ".wmd" "not a wmd file"
-    instance = MatchingInstance(filepath)
+    instance = MatchingInstance(filepath, unweight)
     graph = SimpleDiGraph([Edge(e.src, e.dst) for e in edges(instance.graph)])
 
     weights = collect(instance.graph.weights)
